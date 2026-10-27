@@ -105,6 +105,26 @@ E:/AIProject/erchuang/.venv/Scripts/python.exe wx_fetch.py <链接...> -o 对标
 → 拿 `playable_url` 里的 token/eid → `POST https://channels.weixin.qq.com/finder-preview/api/feed/get_feed_info`
 → `feedInfo.mediaType`：2=图集（picInfo 数组），4=视频（h264VideoInfo.videoUrl）
 
+## 跨机同步（2026-10-27 建立）
+
+仓库：https://github.com/sumukeio/Video_Replication.git （**当前是 public**）
+
+**推送时机（用户明确要求）**：只在「一轮工作真正收尾」时提醒 push，中间讨论过程不要反复提醒。
+用户原话：「我不希望经常 push，我觉得没必要」。
+
+**一条命令**：`python sync_push.py`（归档会话 → add → commit → push）
+- `--dry-run` 只看会提交什么
+- `-m "信息"` 自定义提交信息
+
+**不同步的东西**（已写进 .gitignore）：
+- `*.mp4`、`对标/**/images/` —— 约 90MB，且有版权归属。另一台机器用 `wx_fetch.py` 按 meta.json 里的链接重拉
+- `会话记录/` —— 原始会话 jsonl。**仓库转 private 后删掉这行才会同步**
+
+**换机恢复三步**：clone → 跑 wx_fetch.py 重拉素材 → 读 `.workbuddy-ai/memory/` 和 `对标/00_横向拆解.md`
+
+**注意**：会话 jsonl 推到仓库里只是档案，不会出现在另一台机器的会话列表里（WorkBuddy 读自己的本地数据库）。
+真正让「接着干」成立的是 memory 文件和文档。
+
 ## 与 erchuang 项目的分工
 
 用户已有 `E:\AIProject\erchuang`（VideoGenerator v2.0）负责「图片 → 配音 + 字幕 + 微动视频」，
